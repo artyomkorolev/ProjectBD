@@ -15,6 +15,6 @@ public interface ProcedureApi {
     @GetMapping("/procedures/{procedureId}")
     ResponseEntity<ProcedureDto> getProcedure(
             @PathVariable("procedureId")
-            UUID procedureId
+            Integer procedureId
     );
 }

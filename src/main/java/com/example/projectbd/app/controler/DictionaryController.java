@@ -16,11 +16,7 @@ import java.util.List;
 public class DictionaryController implements DictionaryApi {
     private final DictionaryService dictionaryService;
 
-    @Override
-    public ResponseEntity<List<ProcedureRoomDto>> getAllProcedureRoom() {
 
-        return null;
-    }
 
     @Override
     public ResponseEntity<List<StaffDto>> getAllStaff() {

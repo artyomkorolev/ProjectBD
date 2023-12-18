@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface RoomOccupancyMapper {
     RoomOccupancyMapper INSTANCE = Mappers.getMapper(RoomOccupancyMapper.class);
-    RoomOccupancyDto toDto (RoomOccupancyItem item);
-    List<RoomOccupancyDto> toDto(List<RoomOccupancyItem> items);
-    List<RoomOccupancyItem> mapToItem(List<RoomOccupancyDto> dtos);
+    //RoomOccupancyDto toDto (RoomOccupancyItem item);
+    //List<RoomOccupancyDto> toDto(List<RoomOccupancyItem> items);
+    //List<RoomOccupancyItem> mapToItem(List<RoomOccupancyDto> dtos);
 }

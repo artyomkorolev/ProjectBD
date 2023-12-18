@@ -24,5 +24,6 @@ public class ProcedureRoomItem {
 
     @OneToMany(mappedBy = "procedureProcedureRoomPK.procedureRoomItem",fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    @Transient
     List<ProcedureProcedureRoomItem> procedureProcedureRoomItems;
 }

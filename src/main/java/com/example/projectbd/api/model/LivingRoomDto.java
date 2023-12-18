@@ -1,6 +1,8 @@
 package com.example.projectbd.api.model;
 
 import lombok.*;
+
+import java.util.List;
 import java.util.UUID;
 @Getter
 @Setter
@@ -13,5 +15,5 @@ public class LivingRoomDto {
     private int floor;
     private String type;
 
-    private ClientDto clientDto;
+    //private List<RoomOccupancyDto> roomOccupancyDtos;
 }

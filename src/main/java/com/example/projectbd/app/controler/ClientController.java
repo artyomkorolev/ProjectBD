@@ -4,6 +4,8 @@ import com.example.projectbd.api.ClientApi;
 import com.example.projectbd.api.model.ClientDto;
 import com.example.projectbd.app.mapper.ClientMapper;
 
+import com.example.projectbd.app.mapper.ProcedureMapper;
+import com.example.projectbd.app.mapper.RoomOccupancyMapper;
 import com.example.projectbd.app.service.ClientService;
 import com.example.projectbd.item.model.ClientItem;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +53,8 @@ public class ClientController implements ClientApi {
         currentClient.setDate_of_birth(newClient.getDate_of_birth());
         currentClient.setAdress(newClient.getAdress());
         currentClient.setPhone_number(newClient.getPhone_number());
-
-
+        //currentClient.setRoomOccupancyItems(RoomOccupancyMapper.INSTANCE.mapToItem(newClient.getRoomOccupancyDto()));
+        currentClient.setProcedures(ProcedureMapper.INSTANCE.mapToItem(newClient.getProcedures()));
         ClientItem updatedClient = clientService.saveClient(currentClient);
         return ResponseEntity.ok(ClientMapper.INSTANCE.toDto(updatedClient));
     }

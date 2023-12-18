@@ -20,20 +20,18 @@ public class ProcedureItem {
     @Generated
     private  Integer id;
     private String name;
-    private int duration;
+    //private int duration;
 
 
-    @OneToMany(mappedBy = "procedure")
-    private List<StaffItem> staffItems;
+   @OneToOne
+   @JoinColumn(name = "staff_id")
+   private StaffItem staffItem;
 
-    @ManyToMany
-    @JoinTable(name = "client_procedure",
-        joinColumns = { @JoinColumn(name = "procedure_id") },
-        inverseJoinColumns = { @JoinColumn(name = "client_id")} )
-    private List<ClientItem> clientItems;
+
 
     @OneToMany(mappedBy = "procedureProcedureRoomPK.procedureItem",fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    @Transient
     List<ProcedureProcedureRoomItem> procedureProcedureRoomItems;
 
 }

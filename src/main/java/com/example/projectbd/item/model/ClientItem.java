@@ -27,5 +27,13 @@ public class ClientItem {
 
     @OneToMany(mappedBy = "roomOccupancyPK.clientItem",fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    @Transient
     List<RoomOccupancyItem> roomOccupancyItems;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "client_procedure",
+            joinColumns = { @JoinColumn(name = "client_id") },
+            inverseJoinColumns = { @JoinColumn(name = "procedure_id")} )
+
+    private List<ProcedureItem> procedures;
 }

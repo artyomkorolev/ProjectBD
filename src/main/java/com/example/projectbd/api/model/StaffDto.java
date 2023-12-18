@@ -1,4 +1,5 @@
 package com.example.projectbd.api.model;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,5 +15,5 @@ private Integer id;
 private  String phone_number;
 private String full_name;
 
-private ProcedureDto procedureDto;
+
 }

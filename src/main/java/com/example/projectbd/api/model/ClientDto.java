@@ -20,5 +20,5 @@ public class ClientDto {
     private  String phone_number;
 
     private List<ProcedureDto> procedures;
-    private  LivingRoomDto livingRoomDto;
+    //private  List<RoomOccupancyDto> RoomOccupancyDto;
 }

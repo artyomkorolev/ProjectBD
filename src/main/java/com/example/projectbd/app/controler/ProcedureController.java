@@ -43,7 +43,7 @@ public class ProcedureController implements ProcedureApi {
     @Override
     public ResponseEntity<ProcedureDto> updateProcedure(Integer procedureId, ProcedureDto procedure) {
         ProcedureItem currentProcedure = procedureService.getProcedure(procedureId);
-        currentProcedure.setDuration(procedure.getDuration());
+        //currentProcedure.setDuration(procedure.getDuration());
         currentProcedure.setId(procedure.getId());
         currentProcedure.setName(procedure.getName());
 

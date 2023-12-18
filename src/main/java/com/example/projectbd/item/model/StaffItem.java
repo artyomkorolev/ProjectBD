@@ -24,6 +24,5 @@ public class StaffItem {
     private String full_name;
 
 
-    @ManyToOne
-    private ProcedureItem procedure;
+
 }

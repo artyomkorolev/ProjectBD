@@ -1,5 +1,6 @@
 package com.example.projectbd.item.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,6 +20,7 @@ public class RoomOccupancyPK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="living_room_id")
+
     private LivingRoomItem livingRoomItem;
     @ManyToOne
     @JoinColumn(name="client_id")

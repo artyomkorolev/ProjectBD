@@ -1,41 +1,43 @@
 package com.example.projectbd.api;
 
-import com.example.projectbd.api.model.ClientDto;
-import com.example.projectbd.api.model.LivingRoomDto;
+import com.example.projectbd.api.model.request.LivingRoomRequest;
+import com.example.projectbd.api.model.response.LivingRoomResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface LivingRoomApi {
-    @GetMapping("/livingrooms")
-    ResponseEntity<List<LivingRoomDto>> getAllLivingRooms();
-
-    @GetMapping("/livingrooms/{livingroomId}")
-    ResponseEntity<LivingRoomDto> getLivingRoom(
-            @PathVariable("livingroomId")
-            Integer livingroomId
+    @GetMapping("/livingRooms")
+    ResponseEntity<List<LivingRoomResponse>> getAllLivingRooms(
+        @RequestParam(required = false, defaultValue = "0") int page,
+        @RequestParam(required = false, defaultValue = "10") int size
     );
 
-    @PostMapping("/livingrooms")
-    ResponseEntity<LivingRoomDto> addLivingRoom(
+    @GetMapping("/livingRooms/{livingRoomId}")
+    ResponseEntity<LivingRoomResponse> getLivingRoom(
+            @PathVariable("livingRoomId")
+            Integer livingRoomId
+    );
+
+    @PostMapping("/livingRooms")
+    ResponseEntity<LivingRoomResponse> addLivingRoom(
             @RequestBody
-            LivingRoomDto livingroom
+            LivingRoomRequest livingRoom
     );
 
-    @PutMapping("/livingrooms/{livingroomId}")
-    ResponseEntity<LivingRoomDto> updateLivingRoom(
-            @PathVariable("livingroomId")
-            Integer livingroomId,
+    @PutMapping("/livingRooms/{livingRoomId}")
+    ResponseEntity<LivingRoomResponse> updateLivingRoom(
+            @PathVariable("livingRoomId")
+            Integer livingRoomId,
 
             @RequestBody
-            LivingRoomDto livingroom
+            LivingRoomRequest livingRoom
     );
 
-    @DeleteMapping("/livingrooms/{livingroomId}")
+    @DeleteMapping("/livingRooms/{livingRoomId}")
     ResponseEntity<Void> deleteLivingRoom(
-            @PathVariable("livingroomId")
-            Integer livingroomId
+            @PathVariable("livingRoomId")
+            Integer livingRoomId
     );
 }

@@ -2,15 +2,14 @@ package com.example.projectbd.app.controler;
 
 import com.example.projectbd.api.LivingRoomApi;
 
-import com.example.projectbd.api.model.LivingRoomDto;
-
-import com.example.projectbd.app.mapper.ClientMapper;
+import com.example.projectbd.api.model.request.LivingRoomRequest;
+import com.example.projectbd.api.model.response.LivingRoomResponse;
 import com.example.projectbd.app.mapper.LivingRoomMapper;
 import com.example.projectbd.app.service.LivingRoomService;
 
-import com.example.projectbd.item.model.ClientItem;
 import com.example.projectbd.item.model.LivingRoomItem;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,43 +22,47 @@ public class LivingRoomController implements LivingRoomApi {
 
 
     private final LivingRoomService livingRoomService;
+    private final LivingRoomMapper livingRoomMapper;
 
 
     @Override
-    public ResponseEntity<List<LivingRoomDto>> getAllLivingRooms() {
-        List<LivingRoomItem> allLivingRooms = livingRoomService.getAllLivingRooms();
-        return ResponseEntity.ok(LivingRoomMapper.INSTANCE.toDto(allLivingRooms));
+    public ResponseEntity<List<LivingRoomResponse>> getAllLivingRooms(int page, int size) {
+        List<LivingRoomItem> allLivingRooms = livingRoomService.getAllLivingRooms(PageRequest.of(page, size));
+        return ResponseEntity.ok(
+                livingRoomMapper.mapToDto(allLivingRooms));
     }
 
     @Override
-    public ResponseEntity<LivingRoomDto> getLivingRoom(Integer livingroomId) {
-        LivingRoomItem livingroom = livingRoomService.getLivingRoom(livingroomId);
-        return ResponseEntity.ok(LivingRoomMapper.INSTANCE.toDto(livingroom));
+    public ResponseEntity<LivingRoomResponse> getLivingRoom(Integer livingRoomId) {
+        LivingRoomItem livingRoom = livingRoomService.getLivingRoom(livingRoomId);
+        return ResponseEntity.ok(
+                livingRoomMapper.mapToDto(livingRoom));
     }
 
     @Override
-    public ResponseEntity<LivingRoomDto> addLivingRoom(LivingRoomDto livingroom) {
-        LivingRoomItem livingRoomItem = LivingRoomMapper.INSTANCE.mapToItem(livingroom);
-        //clientItem.setId(Integer.randomInteger());
+    public ResponseEntity<LivingRoomResponse> addLivingRoom(LivingRoomRequest livingRoom) {
+        LivingRoomItem livingRoomItem = livingRoomMapper.mapRequestToItem(livingRoom);
         LivingRoomItem createdLivingRoom = livingRoomService.createLivingRoom(livingRoomItem);
-        return ResponseEntity.status(HttpStatus.CREATED).body(LivingRoomMapper.INSTANCE.toDto(createdLivingRoom));
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                livingRoomMapper.mapToDto(createdLivingRoom));
     }
 
     @Override
-    public ResponseEntity<LivingRoomDto> updateLivingRoom(Integer livingroomId, LivingRoomDto livingroom) {
-        LivingRoomItem currentLivingRoom = livingRoomService.getLivingRoom(livingroomId);
-        currentLivingRoom.setFloor(livingroom.getFloor());
-        currentLivingRoom.setType(livingroom.getType());
-        currentLivingRoom.setNumber(livingroom.getNumber());
-
+    public ResponseEntity<LivingRoomResponse> updateLivingRoom(Integer livingRoomId, LivingRoomRequest livingRoom) {
+        LivingRoomItem livingRoomItem = livingRoomMapper.mapRequestToItem(livingRoom);
+        LivingRoomItem currentLivingRoom = livingRoomService.getLivingRoom(livingRoomId);
+        currentLivingRoom.setNumber(livingRoomItem.getNumber());
+        currentLivingRoom.setPrice(livingRoomItem.getPrice());
+        currentLivingRoom.setStatus(livingRoomItem.isStatus());
 
         LivingRoomItem updatedLivingRoom = livingRoomService.saveLivingRoom(currentLivingRoom);
-        return ResponseEntity.ok(LivingRoomMapper.INSTANCE.toDto(updatedLivingRoom));
+        return ResponseEntity.ok(
+                livingRoomMapper.mapToDto(updatedLivingRoom));
     }
 
     @Override
-    public ResponseEntity<Void> deleteLivingRoom(Integer livingroomId) {
-        livingRoomService.deleteLivingRoom(livingroomId);
+    public ResponseEntity<Void> deleteLivingRoom(Integer livingRoomId) {
+        livingRoomService.deleteLivingRoom(livingRoomId);
         return ResponseEntity.ok().build();
     }
 }

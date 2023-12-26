@@ -7,20 +7,28 @@ import com.example.projectbd.item.ProcedureRepository;
 
 import com.example.projectbd.item.model.ProcedureItem;
 
+import com.example.projectbd.specifications.ProcedureSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProcedureImpl implements ProcedureService {
+public class ProcedureServiceImpl implements ProcedureService {
 
     private final ProcedureRepository procedureRepository;
 
     @Override
-    public List<ProcedureItem> getAllProcedures() {
-        return procedureRepository.findAll();
+    public List<ProcedureItem> getAllProcedures(PageRequest pageRequest) {
+        return procedureRepository.findAll(pageRequest).getContent();
+    }
+
+    @Override
+    public List<ProcedureItem> getAllProcedures(String name, PageRequest pageRequest) {
+        return procedureRepository.findAll(Specification.where(ProcedureSpecification.hasName(name)), pageRequest).getContent();
     }
 
     @Override

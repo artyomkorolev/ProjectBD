@@ -1,11 +1,13 @@
 package com.example.projectbd.app.controler;
 
 import com.example.projectbd.api.ProcedureApi;
-import com.example.projectbd.api.model.ProcedureDto;
+import com.example.projectbd.api.model.request.ProcedureRequest;
+import com.example.projectbd.api.model.response.ProcedureResponse;
 import com.example.projectbd.app.mapper.ProcedureMapper;
 import com.example.projectbd.app.service.ProcedureService;
 import com.example.projectbd.item.model.ProcedureItem;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
@@ -17,38 +19,46 @@ import java.util.List;
 public class ProcedureController implements ProcedureApi {
 
     private  final ProcedureService procedureService;
+    private final ProcedureMapper procedureMapper;
 
     @Override
-    public ResponseEntity<List<ProcedureDto>> getAllProcedures() {
-        List<ProcedureItem> allProcedures = procedureService.getAllProcedures();
-        return ResponseEntity.ok(ProcedureMapper.INSTANCE.toDto(allProcedures));
+    public ResponseEntity<List<ProcedureResponse>> getAllProcedures(int page, int size) {
+        List<ProcedureItem> allProcedures = procedureService.getAllProcedures(PageRequest.of(page, size));
+        return ResponseEntity.ok(procedureMapper.mapToDto(allProcedures));
     }
 
     @Override
-    public ResponseEntity<ProcedureDto> getProcedure(Integer procedureId) {
+    public ResponseEntity<List<ProcedureResponse>> getAllProceduresWithFilter(String name, int page, int size) {
+        List<ProcedureItem> allProcedures = procedureService.getAllProcedures(name, PageRequest.of(page, size));
+        return ResponseEntity.ok(procedureMapper.mapToDto(allProcedures));
+    }
+
+    @Override
+    public ResponseEntity<ProcedureResponse> getProcedure(Integer procedureId) {
         ProcedureItem procedure =procedureService.getProcedure(procedureId);
-        return ResponseEntity.ok(ProcedureMapper.INSTANCE.toDto(procedure));
+        return ResponseEntity.ok(procedureMapper.mapToDto(procedure));
     }
 
     @Override
-    public ResponseEntity<ProcedureDto> addProcedure(ProcedureDto procedure) {
+    public ResponseEntity<ProcedureResponse> addProcedure(ProcedureRequest procedure) {
 
-        ProcedureItem procedureItem = ProcedureMapper.INSTANCE.mapToItem(procedure);
+        ProcedureItem procedureItem = procedureMapper.mapRequestToItem(procedure);
 
         ProcedureItem createdProcedure = procedureService.createProcedure(procedureItem);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProcedureMapper.INSTANCE.toDto(createdProcedure));
+        return ResponseEntity.status(HttpStatus.CREATED).body(procedureMapper.mapToDto(createdProcedure));
     }
 
     @Override
-    public ResponseEntity<ProcedureDto> updateProcedure(Integer procedureId, ProcedureDto procedure) {
+    public ResponseEntity<ProcedureResponse> updateProcedure(Integer procedureId, ProcedureRequest procedure) {
+        ProcedureItem procedureItem = procedureMapper.mapRequestToItem(procedure);
         ProcedureItem currentProcedure = procedureService.getProcedure(procedureId);
-        //currentProcedure.setDuration(procedure.getDuration());
-        currentProcedure.setId(procedure.getId());
-        currentProcedure.setName(procedure.getName());
-
+        currentProcedure.setName(procedureItem.getName());
+        currentProcedure.setPrice(procedureItem.getPrice());
+        currentProcedure.setStaff(procedureItem.getStaff());
+        currentProcedure.setProcedureRoom(procedureItem.getProcedureRoom());
         ProcedureItem updatedProcedure = procedureService.saveProcedure(currentProcedure);
-        return ResponseEntity.ok(ProcedureMapper.INSTANCE.toDto(updatedProcedure));
+        return ResponseEntity.ok(procedureMapper.mapToDto(updatedProcedure));
     }
 
     @Override

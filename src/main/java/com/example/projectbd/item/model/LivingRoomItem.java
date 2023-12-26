@@ -10,7 +10,6 @@ import java.util.UUID;
 @Table(name = "living_room")
 @Getter
 @Setter
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,10 +18,9 @@ public class LivingRoomItem {
     @Generated
     private  Integer id;
     private int number;
-    private int floor;
-    private String type;
+    private int price;
+    private boolean status;
 
-    @OneToMany(mappedBy = "roomOccupancyPK.livingRoomItem",fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    List<RoomOccupancyItem> roomOccupancyItems;
+    @OneToMany(mappedBy = "livingRoom")
+    private List<ClientItem> clients;
 }

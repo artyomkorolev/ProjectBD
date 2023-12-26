@@ -1,20 +1,17 @@
 package com.example.projectbd.app.mapper;
 
-import com.example.projectbd.api.model.ClientDto;
-import com.example.projectbd.api.model.ProcedureRoomDto;
-import com.example.projectbd.item.model.ClientItem;
+import com.example.projectbd.api.model.request.ProcedureRoomRequest;
+import com.example.projectbd.api.model.response.ProcedureRoomResponse;
 import com.example.projectbd.item.model.ProcedureRoomItem;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+@Mapper(componentModel = "spring")
+public abstract class ProcedureRoomMapper {
+    public abstract ProcedureRoomItem mapRequestToItem(ProcedureRoomRequest request);
+    public abstract ProcedureRoomResponse mapToDto(ProcedureRoomItem item);
 
-@Mapper
-public interface ProcedureRoomMapper {
-    ProcedureRoomMapper INSTANCE = Mappers.getMapper(ProcedureRoomMapper.class);
-    ProcedureRoomDto toDto (ProcedureRoomItem item);
-    List<ProcedureRoomDto> toDto(List<ProcedureRoomItem> items);
-    ProcedureRoomItem mapToItem(ProcedureRoomDto dto);
-    List<ProcedureRoomItem> mapToItem(List<ProcedureRoomDto> dtos);
+    public abstract List<ProcedureRoomResponse> mapToDto(List<ProcedureRoomItem> items);
+    public abstract List<ProcedureRoomItem> mapToItem(List<ProcedureRoomResponse> items);
+    public abstract ProcedureRoomItem mapToItem(ProcedureRoomResponse dto);
 }
-

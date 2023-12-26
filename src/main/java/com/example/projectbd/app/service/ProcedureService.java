@@ -1,12 +1,13 @@
 package com.example.projectbd.app.service;
 
 import com.example.projectbd.item.model.ProcedureItem;
-import com.example.projectbd.item.model.ProcedureRoomItem;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
 public interface ProcedureService {
-    List<ProcedureItem> getAllProcedures();
+    List<ProcedureItem> getAllProcedures(PageRequest pageRequest);
+    List<ProcedureItem> getAllProcedures(String name,PageRequest pageRequest);
 
     ProcedureItem getProcedure(Integer procedureId);
 

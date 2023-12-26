@@ -1,13 +1,15 @@
 package com.example.projectbd.app.controler;
 
 import com.example.projectbd.api.ProcedureRoomApi;
-import com.example.projectbd.api.model.ProcedureRoomDto;
+import com.example.projectbd.api.model.request.ProcedureRoomRequest;
+import com.example.projectbd.api.model.response.ProcedureRoomResponse;
+import com.example.projectbd.app.mapper.ProcedureMapper;
 import com.example.projectbd.app.mapper.ProcedureRoomMapper;
 import com.example.projectbd.app.service.ProcedureRoomService;
 import com.example.projectbd.item.model.ProcedureRoomItem;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,44 +18,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProcedureRoomController implements ProcedureRoomApi {
 
-    private  final ProcedureRoomService procedureRoomService;
+    private final ProcedureRoomService procedureRoomService;
+    private final ProcedureRoomMapper procedureRoomMapper;
 
     @Override
-    public ResponseEntity<List<ProcedureRoomDto>> getAllProcedureRooms() {
-        List<ProcedureRoomItem> allProcedureRooms = procedureRoomService.getAllProcedureRooms();
-        return ResponseEntity.ok(ProcedureRoomMapper.INSTANCE.toDto(allProcedureRooms));
+    public ResponseEntity<List<ProcedureRoomResponse>> getAllProcedureRooms(int page, int size) {
+        List<ProcedureRoomItem> allProcedureRooms = procedureRoomService.getAllProcedureRooms(PageRequest.of(page, size));
+        return ResponseEntity.ok(procedureRoomMapper.mapToDto(allProcedureRooms));
     }
 
     @Override
-    public ResponseEntity<ProcedureRoomDto> getProcedureRoom(Integer procedureroomId) {
-        ProcedureRoomItem procedureRoom =procedureRoomService.getProcedureRoom(procedureroomId);
-        return ResponseEntity.ok(ProcedureRoomMapper.INSTANCE.toDto(procedureRoom));
+    public ResponseEntity<ProcedureRoomResponse> getProcedureRoom(Integer procedureRoomId) {
+        ProcedureRoomItem procedureRoom =procedureRoomService.getProcedureRoom(procedureRoomId);
+        return ResponseEntity.ok(procedureRoomMapper.mapToDto(procedureRoom));
     }
 
     @Override
-    public ResponseEntity<ProcedureRoomDto> addProcedureRoom(ProcedureRoomDto procedureroom) {
+    public ResponseEntity<ProcedureRoomResponse> addProcedureRoom(ProcedureRoomRequest procedureRoom) {
 
-        ProcedureRoomItem procedureRoomItem = ProcedureRoomMapper.INSTANCE.mapToItem(procedureroom);
+        ProcedureRoomItem procedureRoomItem = procedureRoomMapper.mapRequestToItem(procedureRoom);
 
         ProcedureRoomItem createdProcedureRoom = procedureRoomService.createProcedureRoom(procedureRoomItem);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProcedureRoomMapper.INSTANCE.toDto(createdProcedureRoom));
+        return ResponseEntity.status(HttpStatus.CREATED).body(procedureRoomMapper.mapToDto(createdProcedureRoom));
     }
 
     @Override
-    public ResponseEntity<ProcedureRoomDto> updateProcedureRoom(Integer procedureroomId, ProcedureRoomDto procedureroom) {
-        ProcedureRoomItem currentProcedureRoom = procedureRoomService.getProcedureRoom(procedureroomId);
-        currentProcedureRoom.setCaparity(procedureroom.getCaparity());
-        currentProcedureRoom.setId(procedureroom.getId());
-        currentProcedureRoom.setName(procedureroom.getName());
-
+    public ResponseEntity<ProcedureRoomResponse> updateProcedureRoom(Integer procedureRoomId, ProcedureRoomRequest procedureRoom) {
+        ProcedureRoomItem procedureRoomItem = procedureRoomMapper.mapRequestToItem(procedureRoom);
+        ProcedureRoomItem currentProcedureRoom = procedureRoomService.getProcedureRoom(procedureRoomId);
+        currentProcedureRoom.setNumber(procedureRoomItem.getNumber());
         ProcedureRoomItem updatedProcedureRoom = procedureRoomService.saveProcedureRoom(currentProcedureRoom);
-        return ResponseEntity.ok(ProcedureRoomMapper.INSTANCE.toDto(updatedProcedureRoom));
+        return ResponseEntity.ok(procedureRoomMapper.mapToDto(updatedProcedureRoom));
     }
 
     @Override
-    public ResponseEntity<Void> deleteProcedureRoom(Integer procedureroomId) {
-        procedureRoomService.deleteProcedureRoom(procedureroomId);
+    public ResponseEntity<Void> deleteProcedureRoom(Integer procedureRoomId) {
+        procedureRoomService.deleteProcedureRoom(procedureRoomId);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,35 +1,44 @@
 package com.example.projectbd.api;
 
-import com.example.projectbd.api.model.ProcedureDto;
-import com.example.projectbd.api.model.ProcedureRoomDto;
+import com.example.projectbd.api.model.request.ProcedureRequest;
+import com.example.projectbd.api.model.response.ProcedureResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ProcedureApi {
     @GetMapping("/procedures")
-    ResponseEntity<List<ProcedureDto>> getAllProcedures();
+    ResponseEntity<List<ProcedureResponse>> getAllProcedures(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    );
+
+    @GetMapping("/procedure/find")
+    ResponseEntity<List<ProcedureResponse>> getAllProceduresWithFilter(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    );
 
     @GetMapping("/procedures/{procedureId}")
-    ResponseEntity<ProcedureDto> getProcedure(
+    ResponseEntity<ProcedureResponse> getProcedure(
             @PathVariable("procedureId")
             Integer procedureId
     );
     @PostMapping("/procedures")
-    ResponseEntity<ProcedureDto> addProcedure(
+    ResponseEntity<ProcedureResponse> addProcedure(
             @RequestBody
-            ProcedureDto procedure
+            ProcedureRequest procedure
     );
 
     @PutMapping("/procedures/{procedureId}")
-    ResponseEntity<ProcedureDto> updateProcedure(
+    ResponseEntity<ProcedureResponse> updateProcedure(
             @PathVariable("procedureId")
             Integer proceduremId,
 
             @RequestBody
-            ProcedureDto procedure
+            ProcedureRequest procedure
     );
 
     @DeleteMapping("/procedures/{procedureId}")

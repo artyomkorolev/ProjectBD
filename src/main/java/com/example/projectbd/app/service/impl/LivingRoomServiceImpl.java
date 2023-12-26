@@ -5,18 +5,19 @@ import com.example.projectbd.app.service.LivingRoomService;
 import com.example.projectbd.item.LivingRoomReposiry;
 import com.example.projectbd.item.model.LivingRoomItem;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class LivingRoomImpl implements LivingRoomService {
+public class LivingRoomServiceImpl implements LivingRoomService {
 
     private final LivingRoomReposiry livingRoomRepository;
 
     @Override
-    public List<LivingRoomItem> getAllLivingRooms() {
-        return livingRoomRepository.findAll();
+    public List<LivingRoomItem> getAllLivingRooms(PageRequest pageRequest) {
+        return livingRoomRepository.findAll(pageRequest).getContent();
     }
 
     @Override

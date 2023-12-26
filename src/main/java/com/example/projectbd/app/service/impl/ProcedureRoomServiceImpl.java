@@ -5,19 +5,20 @@ import com.example.projectbd.app.service.ProcedureRoomService;
 import com.example.projectbd.item.ProcedureRoomRepository;
 import com.example.projectbd.item.model.ProcedureRoomItem;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProcedureRoomImpl implements ProcedureRoomService {
+public class ProcedureRoomServiceImpl implements ProcedureRoomService {
 
     private final ProcedureRoomRepository procedureRoomRepository;
 
     @Override
-    public List<ProcedureRoomItem> getAllProcedureRooms() {
-        return procedureRoomRepository.findAll();
+    public List<ProcedureRoomItem> getAllProcedureRooms(PageRequest pageRequest) {
+        return procedureRoomRepository.findAll(pageRequest).getContent();
     }
 
     @Override

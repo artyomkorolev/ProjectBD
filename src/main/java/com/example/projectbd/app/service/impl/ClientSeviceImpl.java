@@ -4,11 +4,14 @@ import com.example.projectbd.app.exception.NotFoundException;
 import com.example.projectbd.app.service.ClientService;
 import com.example.projectbd.item.ClientRepository;
 import com.example.projectbd.item.model.ClientItem;
+import com.example.projectbd.specifications.ClientSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class ClientSeviceImpl implements ClientService {
@@ -16,8 +19,12 @@ public class ClientSeviceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     @Override
-    public List<ClientItem> getAllClients() {
-        return clientRepository.findAll();
+    public List<ClientItem> getAllClients(PageRequest pageRequest) {
+        return clientRepository.findAll(pageRequest).getContent();
+    }
+
+    public List<ClientItem> getAllClients(String fullName, PageRequest pageRequest) {
+        return clientRepository.findAll(Specification.where(ClientSpecifications.hasFullName(fullName)),pageRequest).getContent();
     }
 
     @Override
@@ -27,6 +34,7 @@ public class ClientSeviceImpl implements ClientService {
 
     @Override
     public ClientItem createClient(ClientItem clientItem) {
+        clientItem.getLivingRoom().setStatus(true);
         return saveClient(clientItem);
     }
 
@@ -37,6 +45,7 @@ public class ClientSeviceImpl implements ClientService {
 
     @Override
     public void deleteClient(Integer clientId) {
+        getClient(clientId).getLivingRoom().setStatus(false);
         clientRepository.deleteById(clientId);
     }
 }

@@ -1,39 +1,43 @@
 package com.example.projectbd.api;
 
-import com.example.projectbd.api.model.ClientDto;
-import com.example.projectbd.api.model.ProcedureRoomDto;
+import com.example.projectbd.api.model.request.ProcedureRequest;
+import com.example.projectbd.api.model.request.ProcedureRoomRequest;
+import com.example.projectbd.api.model.response.ProcedureRoomResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 public interface ProcedureRoomApi {
-    @GetMapping("/procedurerooms")
-    ResponseEntity<List<ProcedureRoomDto>> getAllProcedureRooms();
-
-    @GetMapping("/procedurerooms/{procedureroomId}")
-    ResponseEntity<ProcedureRoomDto> getProcedureRoom(
-            @PathVariable("procedureroomId")
-            Integer procedureroomId
+    @GetMapping("/procedureRooms")
+    ResponseEntity<List<ProcedureRoomResponse>> getAllProcedureRooms(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
     );
-    @PostMapping("/procedurerooms")
-    ResponseEntity<ProcedureRoomDto> addProcedureRoom(
+
+    @GetMapping("/procedureRooms/{procedureRoomId}")
+    ResponseEntity<ProcedureRoomResponse> getProcedureRoom(
+            @PathVariable("procedureRoomId")
+            Integer procedureRoomId
+    );
+    @PostMapping("/procedureRooms")
+    ResponseEntity<ProcedureRoomResponse> addProcedureRoom(
             @RequestBody
-            ProcedureRoomDto procedureroom
+            ProcedureRoomRequest procedureRoom
     );
 
-    @PutMapping("/procedurerooms/{procedureroomId}")
-    ResponseEntity<ProcedureRoomDto> updateProcedureRoom(
-            @PathVariable("procedureroomId")
-            Integer procedureroomId,
+    @PutMapping("/procedureRooms/{procedureRoomId}")
+    ResponseEntity<ProcedureRoomResponse> updateProcedureRoom(
+            @PathVariable("procedureRoomId")
+            Integer procedureRoomId,
 
             @RequestBody
-            ProcedureRoomDto procedureroom
+            ProcedureRoomRequest procedureRoom
     );
 
-    @DeleteMapping("/procedurerooms/{procedureroomId}")
+    @DeleteMapping("/procedureRooms/{procedureRoomId}")
     ResponseEntity<Void> deleteProcedureRoom(
-            @PathVariable("procedureroomId")
-            Integer procedureroomId
+            @PathVariable("procedureRoomId")
+            Integer procedureRoomId
     );
 }

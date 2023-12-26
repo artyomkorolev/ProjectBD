@@ -1,18 +1,16 @@
 package com.example.projectbd.item.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Generated;
 import java.util.UUID;
 import java.util.List;
 
 @Entity
-@Table(name = "procedure")
-@Data
+@Table(name = "proc")
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProcedureItem {
@@ -20,18 +18,17 @@ public class ProcedureItem {
     @Generated
     private  Integer id;
     private String name;
-    //private int duration;
-
+    private long price;
 
    @OneToOne
-   @JoinColumn(name = "staff_id")
-   private StaffItem staffItem;
+   private StaffItem staff;
 
+   @ManyToOne
+   @JoinColumn(name="proc_room_id")
+   private ProcedureRoomItem procedureRoom;
 
-
-    @OneToMany(mappedBy = "procedureProcedureRoomPK.procedureItem",fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "pk.procedure",fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    @Transient
-    List<ProcedureProcedureRoomItem> procedureProcedureRoomItems;
+    private List<ClientProcedureItem> clientProcedure;
 
 }

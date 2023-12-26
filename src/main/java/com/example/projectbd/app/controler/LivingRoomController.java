@@ -33,6 +33,14 @@ public class LivingRoomController implements LivingRoomApi {
     }
 
     @Override
+    public ResponseEntity<List<LivingRoomResponse>> getAllLivingRoomsFilter(boolean param, int page, int size) {
+        List<LivingRoomItem> allLivingRooms = livingRoomService.getAllLivingRooms(param, PageRequest.of(page, size));
+        return ResponseEntity.ok(
+                livingRoomMapper.mapToDto(allLivingRooms));
+    }
+
+
+    @Override
     public ResponseEntity<LivingRoomResponse> getLivingRoom(Integer livingRoomId) {
         LivingRoomItem livingRoom = livingRoomService.getLivingRoom(livingRoomId);
         return ResponseEntity.ok(

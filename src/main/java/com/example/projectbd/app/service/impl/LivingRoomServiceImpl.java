@@ -4,8 +4,10 @@ import com.example.projectbd.app.exception.NotFoundException;
 import com.example.projectbd.app.service.LivingRoomService;
 import com.example.projectbd.item.LivingRoomReposiry;
 import com.example.projectbd.item.model.LivingRoomItem;
+import com.example.projectbd.specifications.LivingRoomSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,11 @@ public class LivingRoomServiceImpl implements LivingRoomService {
     @Override
     public List<LivingRoomItem> getAllLivingRooms(PageRequest pageRequest) {
         return livingRoomRepository.findAll(pageRequest).getContent();
+    }
+
+    @Override
+    public List<LivingRoomItem> getAllLivingRooms(boolean status, PageRequest pageRequest) {
+        return livingRoomRepository.findAll(Specification.where(LivingRoomSpecifications.hasStatus(status)), pageRequest).getContent();
     }
 
     @Override

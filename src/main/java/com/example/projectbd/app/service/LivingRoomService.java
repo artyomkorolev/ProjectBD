@@ -10,6 +10,8 @@ import java.util.List;
 public interface LivingRoomService {
 
     List<LivingRoomItem> getAllLivingRooms(PageRequest pageRequest);
+    List<LivingRoomItem> getAllLivingRooms(boolean status, PageRequest pageRequest);
+
 
     LivingRoomItem getLivingRoom(Integer livingRoomId);
 

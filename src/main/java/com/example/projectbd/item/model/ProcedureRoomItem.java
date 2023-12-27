@@ -19,6 +19,6 @@ public class ProcedureRoomItem {
     private  Integer id;
     private Integer number;
 
-    @OneToMany
-    private List<ProcedureItem> procedures;
+//    @OneToMany
+//    private List<ProcedureItem> procedures;
 }

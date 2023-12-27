@@ -15,7 +15,7 @@ public interface StaffApi {
         @RequestParam(required = false, defaultValue = "10") int size
     );
 
-    @GetMapping("/staff/find")
+    @GetMapping("/staffs/find")
     ResponseEntity<List<StaffResponse>> getAllStaffWithFilter(
             @RequestParam(required = false) String fullName,
             @RequestParam(required = false, defaultValue = "0") int page,

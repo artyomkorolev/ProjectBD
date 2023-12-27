@@ -9,8 +9,8 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5555/postgres
-    username: hospital
-    password: hospital
+    username: university
+    password: university
   flyway:
     enabled: true
     locations: classpath:db/migration

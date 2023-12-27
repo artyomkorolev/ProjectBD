@@ -30,7 +30,7 @@ public class StaffController implements StaffApi {
     @Override
     public ResponseEntity<List<StaffResponse>> getAllStaffWithFilter(String fullName, int page, int size) {
         List<StaffItem> allStaff = staffService.getAllStaff(fullName,PageRequest.of(page, size));
-        return null;
+        return ResponseEntity.ok(staffMapper.mapToDto(allStaff));
     }
 
     @Override

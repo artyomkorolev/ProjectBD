@@ -6,7 +6,9 @@ import com.example.projectbd.api.model.request.ClientRequest;
 import com.example.projectbd.api.model.response.ClientResponse;
 import com.example.projectbd.app.mapper.ClientMapper;
 import com.example.projectbd.app.service.ClientService;
+import com.example.projectbd.app.service.LivingRoomService;
 import com.example.projectbd.item.model.ClientItem;
+import com.example.projectbd.item.model.LivingRoomItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,6 +24,7 @@ public class ClientController implements ClientApi {
 
     private final ClientService clientService;
     private final ClientMapper clientMapper;
+    private final LivingRoomService livingRoomService;
 
     @Override
     public ResponseEntity<List<ClientResponse>> getAllClients(int page, int size, String sortParam) {
@@ -56,10 +59,17 @@ public class ClientController implements ClientApi {
     public ResponseEntity<ClientResponse> updateClient(Integer clientId, ClientRequest newClient) {
         ClientItem clientItem = clientMapper.mapRequestToItem(newClient);
         ClientItem currentClient = clientService.getClient(clientId);
+        LivingRoomItem currentLivingRoomItem = currentClient.getLivingRoom();
+        currentLivingRoomItem.setStatus(false);
+        livingRoomService.saveLivingRoom(currentLivingRoomItem);
         currentClient.setFullName(clientItem.getFullName());
         currentClient.setPhoneNumber(clientItem.getPhoneNumber());
         currentClient.setAddress(clientItem.getAddress());
         currentClient.setLivingRoom(clientItem.getLivingRoom());
+        LivingRoomItem livingRoomItem = clientItem.getLivingRoom();
+        livingRoomItem.setStatus(true);
+        livingRoomService.saveLivingRoom(livingRoomItem);
+
         ClientItem updatedClient = clientService.saveClient(currentClient);
         return ResponseEntity.ok(clientMapper.mapToDto(updatedClient));
     }

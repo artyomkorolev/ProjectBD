@@ -11,5 +11,4 @@ public class StaffResponse {
     private Integer id;
     private String fullName;
     private  String phoneNumber;
-    private long summa;
 }

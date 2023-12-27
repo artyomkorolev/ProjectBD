@@ -14,7 +14,7 @@ public interface LivingRoomApi {
         @RequestParam(required = false, defaultValue = "10") int size
     );
 
-    @GetMapping("/livingRoom/find")
+    @GetMapping("/livingRooms/find")
     ResponseEntity<List<LivingRoomResponse>> getAllLivingRoomsFilter(
             @RequestParam(required = false) boolean param,
             @RequestParam(required = false, defaultValue = "0") int page,

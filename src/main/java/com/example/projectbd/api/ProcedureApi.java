@@ -14,7 +14,7 @@ public interface ProcedureApi {
             @RequestParam(required = false, defaultValue = "10") int size
     );
 
-    @GetMapping("/procedure/find")
+    @GetMapping("/procedures/find")
     ResponseEntity<List<ProcedureResponse>> getAllProceduresWithFilter(
             @RequestParam(required = false) String name,
             @RequestParam(required = false, defaultValue = "0") int page,
